@@ -1,0 +1,290 @@
+scalar BigInt
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Meta {
+  status: JSON
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type Query {
+  _meta: Meta
+  token(chainId: Float!, tokenAddress: String!): token
+  tokens(after: String, before: String, limit: Int, orderBy: String, orderDirection: String, where: tokenFilter): tokenPage!
+  vault(chainId: Float!, vaultAddress: String!): vault
+  vaultMember(chainId: Float!, member: String!, role: String!, vaultAddress: String!): vaultMember
+  vaultMembers(after: String, before: String, limit: Int, orderBy: String, orderDirection: String, where: vaultMemberFilter): vaultMemberPage!
+  vaults(after: String, before: String, limit: Int, orderBy: String, orderDirection: String, where: vaultFilter): vaultPage!
+}
+
+type token {
+  chainId: Int!
+  createdAtBlock: BigInt
+  decimals: Int!
+  name: String!
+  symbol: String!
+  tokenAddress: String!
+  vaults(after: String, before: String, limit: Int, orderBy: String, orderDirection: String, where: vaultFilter): vaultPage
+}
+
+input tokenFilter {
+  AND: [tokenFilter]
+  OR: [tokenFilter]
+  chainId: Int
+  chainId_gt: Int
+  chainId_gte: Int
+  chainId_in: [Int]
+  chainId_lt: Int
+  chainId_lte: Int
+  chainId_not: Int
+  chainId_not_in: [Int]
+  createdAtBlock: BigInt
+  createdAtBlock_gt: BigInt
+  createdAtBlock_gte: BigInt
+  createdAtBlock_in: [BigInt]
+  createdAtBlock_lt: BigInt
+  createdAtBlock_lte: BigInt
+  createdAtBlock_not: BigInt
+  createdAtBlock_not_in: [BigInt]
+  decimals: Int
+  decimals_gt: Int
+  decimals_gte: Int
+  decimals_in: [Int]
+  decimals_lt: Int
+  decimals_lte: Int
+  decimals_not: Int
+  decimals_not_in: [Int]
+  name: String
+  name_contains: String
+  name_ends_with: String
+  name_in: [String]
+  name_not: String
+  name_not_contains: String
+  name_not_ends_with: String
+  name_not_in: [String]
+  name_not_starts_with: String
+  name_starts_with: String
+  symbol: String
+  symbol_contains: String
+  symbol_ends_with: String
+  symbol_in: [String]
+  symbol_not: String
+  symbol_not_contains: String
+  symbol_not_ends_with: String
+  symbol_not_in: [String]
+  symbol_not_starts_with: String
+  symbol_starts_with: String
+  tokenAddress: String
+  tokenAddress_contains: String
+  tokenAddress_ends_with: String
+  tokenAddress_in: [String]
+  tokenAddress_not: String
+  tokenAddress_not_contains: String
+  tokenAddress_not_ends_with: String
+  tokenAddress_not_in: [String]
+  tokenAddress_not_starts_with: String
+  tokenAddress_starts_with: String
+}
+
+type tokenPage {
+  items: [token!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type vault {
+  chainId: Int!
+  createdAt: String!
+  createdAtBlock: BigInt!
+  createdAtTx: String!
+  curator: String
+  members(after: String, before: String, limit: Int, orderBy: String, orderDirection: String, where: vaultMemberFilter): vaultMemberPage
+  name: String!
+  owner: String!
+  symbol: String!
+  token: token
+  tokenAddress: String!
+  vaultAddress: String!
+}
+
+input vaultFilter {
+  AND: [vaultFilter]
+  OR: [vaultFilter]
+  chainId: Int
+  chainId_gt: Int
+  chainId_gte: Int
+  chainId_in: [Int]
+  chainId_lt: Int
+  chainId_lte: Int
+  chainId_not: Int
+  chainId_not_in: [Int]
+  createdAt: String
+  createdAtBlock: BigInt
+  createdAtBlock_gt: BigInt
+  createdAtBlock_gte: BigInt
+  createdAtBlock_in: [BigInt]
+  createdAtBlock_lt: BigInt
+  createdAtBlock_lte: BigInt
+  createdAtBlock_not: BigInt
+  createdAtBlock_not_in: [BigInt]
+  createdAtTx: String
+  createdAtTx_contains: String
+  createdAtTx_ends_with: String
+  createdAtTx_in: [String]
+  createdAtTx_not: String
+  createdAtTx_not_contains: String
+  createdAtTx_not_ends_with: String
+  createdAtTx_not_in: [String]
+  createdAtTx_not_starts_with: String
+  createdAtTx_starts_with: String
+  createdAt_contains: String
+  createdAt_ends_with: String
+  createdAt_in: [String]
+  createdAt_not: String
+  createdAt_not_contains: String
+  createdAt_not_ends_with: String
+  createdAt_not_in: [String]
+  createdAt_not_starts_with: String
+  createdAt_starts_with: String
+  curator: String
+  curator_contains: String
+  curator_ends_with: String
+  curator_in: [String]
+  curator_not: String
+  curator_not_contains: String
+  curator_not_ends_with: String
+  curator_not_in: [String]
+  curator_not_starts_with: String
+  curator_starts_with: String
+  name: String
+  name_contains: String
+  name_ends_with: String
+  name_in: [String]
+  name_not: String
+  name_not_contains: String
+  name_not_ends_with: String
+  name_not_in: [String]
+  name_not_starts_with: String
+  name_starts_with: String
+  owner: String
+  owner_contains: String
+  owner_ends_with: String
+  owner_in: [String]
+  owner_not: String
+  owner_not_contains: String
+  owner_not_ends_with: String
+  owner_not_in: [String]
+  owner_not_starts_with: String
+  owner_starts_with: String
+  symbol: String
+  symbol_contains: String
+  symbol_ends_with: String
+  symbol_in: [String]
+  symbol_not: String
+  symbol_not_contains: String
+  symbol_not_ends_with: String
+  symbol_not_in: [String]
+  symbol_not_starts_with: String
+  symbol_starts_with: String
+  tokenAddress: String
+  tokenAddress_contains: String
+  tokenAddress_ends_with: String
+  tokenAddress_in: [String]
+  tokenAddress_not: String
+  tokenAddress_not_contains: String
+  tokenAddress_not_ends_with: String
+  tokenAddress_not_in: [String]
+  tokenAddress_not_starts_with: String
+  tokenAddress_starts_with: String
+  vaultAddress: String
+  vaultAddress_contains: String
+  vaultAddress_ends_with: String
+  vaultAddress_in: [String]
+  vaultAddress_not: String
+  vaultAddress_not_contains: String
+  vaultAddress_not_ends_with: String
+  vaultAddress_not_in: [String]
+  vaultAddress_not_starts_with: String
+  vaultAddress_starts_with: String
+}
+
+type vaultMember {
+  addedAtBlock: BigInt!
+  chainId: Int!
+  member: String!
+  role: String!
+  vault: vault
+  vaultAddress: String!
+}
+
+input vaultMemberFilter {
+  AND: [vaultMemberFilter]
+  OR: [vaultMemberFilter]
+  addedAtBlock: BigInt
+  addedAtBlock_gt: BigInt
+  addedAtBlock_gte: BigInt
+  addedAtBlock_in: [BigInt]
+  addedAtBlock_lt: BigInt
+  addedAtBlock_lte: BigInt
+  addedAtBlock_not: BigInt
+  addedAtBlock_not_in: [BigInt]
+  chainId: Int
+  chainId_gt: Int
+  chainId_gte: Int
+  chainId_in: [Int]
+  chainId_lt: Int
+  chainId_lte: Int
+  chainId_not: Int
+  chainId_not_in: [Int]
+  member: String
+  member_contains: String
+  member_ends_with: String
+  member_in: [String]
+  member_not: String
+  member_not_contains: String
+  member_not_ends_with: String
+  member_not_in: [String]
+  member_not_starts_with: String
+  member_starts_with: String
+  role: String
+  role_contains: String
+  role_ends_with: String
+  role_in: [String]
+  role_not: String
+  role_not_contains: String
+  role_not_ends_with: String
+  role_not_in: [String]
+  role_not_starts_with: String
+  role_starts_with: String
+  vaultAddress: String
+  vaultAddress_contains: String
+  vaultAddress_ends_with: String
+  vaultAddress_in: [String]
+  vaultAddress_not: String
+  vaultAddress_not_contains: String
+  vaultAddress_not_ends_with: String
+  vaultAddress_not_in: [String]
+  vaultAddress_not_starts_with: String
+  vaultAddress_starts_with: String
+}
+
+type vaultMemberPage {
+  items: [vaultMember!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type vaultPage {
+  items: [vault!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}

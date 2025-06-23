@@ -1,0 +1,61 @@
+name: Liquidation Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths: # Only run on changes to the liquidation app or dependencies.
+      - "apps/liquidation-app/**"
+      - "packages/theme/**"
+      - "packages/web3/**"
+      - "packages/utils/**"
+      - "packages/indexer/**"
+      - "tests/e2e-liquidation/**"
+
+env:
+  NEXT_PUBLIC_BLUE_API_URL: ${{ vars.NEXT_PUBLIC_BLUE_API_URL }}
+  NEXT_PUBLIC_REWARDS_API_URL: ${{ vars.NEXT_PUBLIC_REWARDS_API_URL }}
+  NEXT_PUBLIC_REOWN_APP_ID: ${{ vars.NEXT_PUBLIC_LIQUIDATION_REOWN_APP_ID }}
+  PRIVATE_MAINNET_RPC: ${{ secrets.PRIVATE_MAINNET_RPC_URL }}
+  NEXT_PUBLIC_BLUE_SERVICES_API: ${{ vars.NEXT_PUBLIC_BLUE_SERVICES_API }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  CI: true
+
+jobs:
+  Liquidation-E2E:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Setup repo
+        uses: ./.github/actions/setup
+      - name: Install Foundry (includes anvil)
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      - name: Extract Playwright version
+        id: playwright-version
+        shell: bash
+        run: echo "PLAYWRIGHT_VERSION=$(jq -r '.devDependencies."@playwright/test"' tests/e2e-liquidation/package.json)" >> $GITHUB_ENV
+      - name: Cache Playwright
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
+      - name: Install Playwright dependencies
+        shell: bash
+        run: pnpm --filter e2e-liquidation exec playwright install --with-deps --only-shell
+      - name: Run Playwright tests
+        run: npx turbo test:e2e --filter=e2e-liquidation
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: test-results
+          path: tests/e2e-liquidation/test-results
+          retention-days: 30

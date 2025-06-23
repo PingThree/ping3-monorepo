@@ -1,0 +1,35 @@
+{
+  "name": "@repo/utils",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --project tsconfig.json --noEmit --incremental",
+    "test:unit": "vitest run",
+    "test:e2e:dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@internationalized/date": "^3.8.0",
+    "@tanstack/react-query": "^5.67.2",
+    "date-fns": "^2.30.0",
+    "fuzzball": "^2.2.2",
+    "react": "19.1.0",
+    "viem": "2.29.1"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/react": "19.1.4",
+    "eslint": "^9.28.0",
+    "vitest": "^3.1.2"
+  }
+}

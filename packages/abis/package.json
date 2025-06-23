@@ -1,0 +1,30 @@
+{
+  "name": "@repo/abis",
+  "type": "module",
+  "exports": {
+    "./v1": {
+      "types": "./src/v1/index.d.ts",
+      "import": "./dist/v1/index.js"
+    },
+    "./v2": {
+      "types": "./src/v2/index.d.ts",
+      "import": "./dist/v2/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc --build",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --project tsconfig.json --noEmit --incremental"
+  },
+  "dependencies": {
+    "viem": "2.29.1"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "eslint": "^9.25.1"
+  }
+}

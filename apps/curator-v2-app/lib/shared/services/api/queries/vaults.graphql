@@ -1,0 +1,19 @@
+query AllVaults {
+  vaults(where: { AND: [{ tokenAddress_not: "" }, { tokenAddress_not: null }] }) {
+    items {
+      address
+      chainId
+      name
+      symbol
+      curator
+      owner
+      tokenAddress
+      token {
+        name
+        symbol
+        address
+        decimals
+      }
+    }
+  }
+}

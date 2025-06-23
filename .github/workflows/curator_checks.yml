@@ -1,0 +1,63 @@
+name: Curator Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths: # Only run on changes to the curator app or dependencies.
+      - "apps/curator-app/**"
+      - "packages/theme/**"
+      - "packages/web3/**"
+      - "packages/utils/**"
+      - "tests/e2e-curator/**"
+
+env:
+  VITE_REOWN_APP_ID: ${{ vars.VITE_REOWN_APP_ID }}
+  PRIVATE_MAINNET_RPC: ${{ secrets.PRIVATE_MAINNET_RPC_URL }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  CI: true
+
+jobs:
+  Curator-E2E:
+    timeout-minutes: 12
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Setup repo
+        uses: ./.github/actions/setup
+      - name: Install Foundry (includes anvil)
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      - name: Extract Playwright version
+        id: playwright-version
+        shell: bash
+        run: echo "PLAYWRIGHT_VERSION=$(jq -r '.devDependencies."@playwright/test"' tests/e2e-curator/package.json)" >> $GITHUB_ENV
+      - name: Cache Playwright
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-browsers-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Playwright dependencies
+        shell: bash
+        run: pnpm --filter e2e-curator exec playwright install --with-deps --only-shell
+      - name: Create apps/curator-app/.env
+        run: |
+          cat <<EOF > apps/curator-app/.env
+          VITE_REOWN_APP_ID=${{ vars.VITE_REOWN_APP_ID }}
+          EOF
+      - name: Run Playwright tests
+        run: npx turbo test:e2e --filter=e2e-curator
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: test-results
+          path: tests/e2e-curator/test-results
+          retention-days: 30
