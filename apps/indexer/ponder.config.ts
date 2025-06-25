@@ -1,4 +1,4 @@
-import { VaultAbi, VaultFactoryAbi } from "@repo/abis/v2";
+import { VaultAbi, VaultFactoryAbi } from "@ping3/abi";
 import { parseAbiItem } from "abitype";
 import { createConfig, factory } from "ponder";
 

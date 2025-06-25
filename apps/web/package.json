@@ -1,5 +1,5 @@
 {
-  "name": "curator-v2-app",
+  "name": "web",
   "packageManager": "pnpm@9.12.2",
   "version": "0.1.0",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "@morpho-org/rewards-client": "^0.1.4",
     "@react-aria/i18n": "^3.12.7",
     "@react-stately/data": "^3.12.2",
-    "@repo/abis": "workspace:*",
+    "@ping3/abi": "workspace:*",
     "@repo/utils": "workspace:*",
     "@repo/web3": "workspace:*",
     "@sentry/nextjs": "^9.2.0",

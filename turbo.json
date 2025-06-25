@@ -31,7 +31,8 @@
     "TURBOPACK",
     "NEXT_PUBLIC_E2E_TEST",
     "FOUNDRY_DISABLE_NIGHTLY_WARNING",
-    "NEXT_PUBLIC_BLUE_SERVICES_API"
+    "NEXT_PUBLIC_BLUE_SERVICES_API",
+    "ETHERSCAN_API_KEY"
   ],
   "tasks": {
     "build": {
@@ -59,11 +60,7 @@
       "outputs": ["lib/shared/services/programs/rewards-api/auto-types.ts"]
     },
     "test:unit": {
-      "dependsOn": [
-        "^test:unit",
-        "^@repo/web3#build",
-        "^@repo/utils#build",
-      ]
+      "dependsOn": ["^test:unit", "^@repo/web3#build", "^@repo/utils#build"]
     },
     "typecheck": {
       "dependsOn": ["^typecheck", "^build"]
@@ -74,8 +71,11 @@
       "dependsOn": [
         "^@repo/web3#build",
         "^@repo/utils#build",
-        "^@repo/abis#build"
+        "^@ping3/abi#build"
       ]
+    },
+    "gen:wagmi": {
+      "dependsOn": ["^gen:wagmi"]
     },
     "test:e2e:dev": {
       "dependsOn": ["^build"],

@@ -1,19 +1,17 @@
 {
-  "name": "@repo/abis",
+  "name": "@ping3/abi",
   "type": "module",
   "exports": {
-    "./v1": {
-      "types": "./src/v1/index.d.ts",
-      "import": "./dist/v1/index.js"
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./dist/index.js"
     },
-    "./v2": {
-      "types": "./src/v2/index.d.ts",
-      "import": "./dist/v2/index.js"
-    }
+    "./ping3/json": "./src/Ping3.json"
   },
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc --build",
+    "gen:wagmi": "wagmi generate",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --project tsconfig.json --noEmit --incremental"
@@ -25,6 +23,10 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "eslint": "^9.25.1"
+    "@types/node": "^24.0.4",
+    "@wagmi/cli": "^2.1.15",
+    "dotenv": "^16.5.0",
+    "eslint": "^9.25.1",
+    "wagmi": "^2.14.15"
   }
 }

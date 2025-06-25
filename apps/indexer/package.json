@@ -1,5 +1,5 @@
 {
-  "name": "vault-indexer",
+  "name": "indexer",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@repo/abis": "workspace:*",
+    "@ping3/abi": "workspace:*",
     "ponder": "^0.11.14",
     "abitype": "^0.10.2",
     "hono": "^4.5.0",
