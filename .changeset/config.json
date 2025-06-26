@@ -3,7 +3,7 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "ping3/ping3-monorepo"
+      "repo": "PingThree/ping3-monorepo"
     }
   ],
   "commit": false,

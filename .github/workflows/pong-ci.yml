@@ -75,6 +75,9 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/main'
 
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -99,10 +102,9 @@ jobs:
       - name: Generate documentation
         run: pnpm --filter "@ping3/pong" build:docs
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        if: github.ref == 'refs/heads/main'
+      - name: Upload documentation artifacts
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/pong/docs
-          destination_dir: packages/pong
+          name: pong-documentation
+          path: ./packages/pong/docs
+          retention-days: 30
