@@ -51,6 +51,29 @@ jobs:
       - name: Run tests
         run: pnpm --filter "@ping3/pong" test
 
+      - name: Debug npm configuration
+        run: |
+          echo "NPM Registry: $(npm config get registry)"
+          echo "NPM Token configured: $([ -n "$NPM_TOKEN" ] && echo "Yes" || echo "No")"
+          npm whoami || echo "Not authenticated"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Configure npm authentication
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Test npm publish permissions
+        run: |
+          cd packages/pong
+          npm publish --dry-run
+          echo "Dry run successful - npm authentication working"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1
