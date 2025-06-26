@@ -12,17 +12,7 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "indexer",
-    "web",
-    "@repo/eslint-config",
-    "@repo/prettier-config",
-    "@repo/typescript-config",
-    "@repo/tailwind-config",
-    "@repo/ui",
-    "@repo/utils",
-    "@repo/web3"
-  ],
+  "ignore": ["indexer", "web"],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }
