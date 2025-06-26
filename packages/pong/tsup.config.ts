@@ -17,7 +17,7 @@ export default defineConfig({
  * @ping3/pong
  * TypeScript bindings and React hooks for the Ping3 smart contract
  * 
- * @author ping3
+ * @author Ping3
  * @license MIT
  */`,
   },

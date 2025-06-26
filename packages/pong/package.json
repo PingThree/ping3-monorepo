@@ -13,19 +13,19 @@
     "hooks",
     "web3"
   ],
-  "homepage": "https://github.com/ping3/ping3-monorepo#readme",
+  "homepage": "https://github.com/PingThree/ping3-monorepo#readme",
   "bugs": {
-    "url": "https://github.com/ping3/ping3-monorepo/issues"
+    "url": "https://github.com/PingThree/ping3-monorepo/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ping3/ping3-monorepo.git",
+    "url": "https://github.com/PingThree/ping3-monorepo.git",
     "directory": "packages/pong"
   },
   "license": "MIT",
   "author": {
-    "name": "ping3",
-    "url": "https://github.com/ping3"
+    "name": "Ping3",
+    "url": "https://github.com/PingThree"
   },
   "type": "module",
   "exports": {

@@ -207,10 +207,10 @@ pnpm size
 
 ## License
 
-MIT © [ping3](https://github.com/ping3)
+MIT © [Ping3](https://github.com/PingThree)
 
 ## Links
 
-- [Documentation](https://github.com/ping3/ping3-monorepo/tree/main/packages/pong)
-- [Issues](https://github.com/ping3/ping3-monorepo/issues)
+- [Documentation](https://github.com/PingThree/ping3-monorepo/tree/main/packages/pong)
+- [Issues](https://github.com/PingThree/ping3-monorepo/issues)
 - [NPM Package](https://www.npmjs.com/package/@ping3/pong)
