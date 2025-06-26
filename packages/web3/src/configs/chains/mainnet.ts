@@ -37,7 +37,6 @@ export const mainnet: AppChain = {
     },
     contracts: {
       multicall2: '0x5ba1e12693dc8f9c48aad8770482f4739beed696',
-      urd: '0x330eefa8a787552dc5cad3c3ca644844b1e61ddb',
     },
   },
 }
