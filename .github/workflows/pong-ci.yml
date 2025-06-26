@@ -1,0 +1,108 @@
+name: Pong Package CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "packages/pong/**"
+      - ".github/workflows/pong-ci.yml"
+      - "pnpm-lock.yaml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "packages/pong/**"
+      - ".github/workflows/pong-ci.yml"
+      - "pnpm-lock.yaml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (Node.js ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10.7.0"
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm --filter "@ping3/pong" typecheck
+
+      - name: Lint
+        run: pnpm --filter "@ping3/pong" lint
+
+      - name: Build
+        run: pnpm --filter "@ping3/pong" build
+
+      - name: Test
+        run: pnpm --filter "@ping3/pong" test:coverage
+
+      - name: Check bundle size
+        run: pnpm --filter "@ping3/pong" size
+
+      - name: Upload coverage to Codecov
+        if: matrix.node-version == 20
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./packages/pong/coverage/coverage-final.json
+          flags: pong
+          name: pong-coverage
+          fail_ci_if_error: false
+
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10.7.0"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build package
+        run: pnpm --filter "@ping3/pong" build
+
+      - name: Generate documentation
+        run: pnpm --filter "@ping3/pong" build:docs
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./packages/pong/docs
+          destination_dir: packages/pong

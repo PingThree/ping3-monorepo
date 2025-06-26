@@ -1,0 +1,71 @@
+# Development files
+.turbo/
+.eslintrc*
+.prettierrc*
+*.config.js
+*.config.ts
+*.config.mjs
+tsconfig.json
+tsconfig.*.json
+vitest.config.*
+typedoc.json
+
+# Source files (we include compiled dist instead)
+src/**/*.test.*
+src/**/*.spec.*
+
+# Test and coverage
+test/
+coverage/
+*.test.*
+*.spec.*
+
+# Documentation build
+docs/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependency directories
+node_modules/
+
+# Build artifacts that shouldn't be published
+.tsbuildinfo
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+tmp/
+temp/
+
+# Git
+.git/
+.gitignore
+
+# Package manager files
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Changesets
+.changeset/ 
