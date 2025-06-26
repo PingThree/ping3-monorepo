@@ -71,7 +71,7 @@
       "dependsOn": [
         "^@repo/web3#build",
         "^@repo/utils#build",
-        "^@ping3/abi#build"
+        "^@ping3/pong#build"
       ]
     },
     "gen:wagmi": {

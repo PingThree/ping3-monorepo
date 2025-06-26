@@ -1,4 +1,4 @@
-import { VaultAbi, VaultFactoryAbi } from "@ping3/abi";
+import { VaultAbi, VaultFactoryAbi } from "@ping3/pong";
 import { parseAbiItem } from "abitype";
 import { createConfig, factory } from "ponder";
 
