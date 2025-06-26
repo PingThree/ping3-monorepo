@@ -1,5 +1,11 @@
 # @ping3/pong
 
+## 0.0.2
+
+### Patch Changes
+
+- [`654c560`](https://github.com/PingThree/ping3-monorepo/commit/654c56060329668ee0ce815d6b773d4ce55ea195) Thanks [@0xprod1gy](https://github.com/0xprod1gy)! - Fix npm authentication in GitHub Actions workflow and improve release automation
+
 ## 0.0.1
 
 ### Patch Changes
