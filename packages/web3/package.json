@@ -1,0 +1,49 @@
+{
+  "name": "@repo/web3",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --project tsconfig.json --noEmit --incremental",
+    "test:e2e:dev": "tsc --watch",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@reown/appkit": "^1.7.6",
+    "@reown/appkit-adapter-wagmi": "^1.7.3",
+    "@repo/utils": "workspace:*",
+    "@tanstack/react-query": "^5.67.2",
+    "defi-numbers": "^0.2.0",
+    "lodash-es": "^4.17.21",
+    "server-only": "^0.0.1",
+    "usehooks-ts": "^2.16.0",
+    "viem": "^2.29.1"
+  },
+  "peerDependencies": {
+    "viem": "^2.29.1",
+    "react": "^19.1.0",
+    "wagmi": "^2.14.15"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@testing-library/react": "^16.2.0",
+    "@types/lodash-es": "^4.17.12",
+    "@types/react": "19.1.4",
+    "@wagmi/cli": "^2.1.15",
+    "eslint": "^9.28.0",
+    "jsdom": "^26.1.0",
+    "vitest": "^3.1.2"
+  }
+}

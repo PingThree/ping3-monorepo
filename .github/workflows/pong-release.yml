@@ -1,0 +1,146 @@
+name: Pong Package Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/pong/**"
+      - ".changeset/**"
+      - ".github/workflows/pong-release.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10.7.0"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build package
+        run: pnpm --filter "@ping3/pong" build
+
+      - name: Run tests
+        run: pnpm --filter "@ping3/pong" test
+
+      - name: Debug npm configuration
+        run: |
+          echo "NPM Registry: $(npm config get registry)"
+          echo "NPM Token configured: $([ -n "$NPM_TOKEN" ] && echo "Yes" || echo "No")"
+          npm whoami || echo "Not authenticated"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Configure npm authentication
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ./.npmrc
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Test npm publish permissions
+        run: |
+          cd packages/pong
+          npm publish --dry-run
+          echo "Dry run successful - npm authentication working"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Check for changesets
+        id: check-changesets
+        run: |
+          if [ -n "$(ls .changeset/*.md 2>/dev/null | grep -v README)" ]; then
+            echo "has-changesets=true" >> $GITHUB_OUTPUT
+            echo "Found changesets to publish"
+          else
+            echo "has-changesets=false" >> $GITHUB_OUTPUT
+            echo "No changesets found"
+          fi
+
+      - name: Version packages and publish
+        if: steps.check-changesets.outputs.has-changesets == 'true'
+        run: |
+          echo "Running changeset version..."
+          pnpm changeset version
+
+          echo "Verifying npm authentication before publish..."
+          npm whoami
+
+          echo "Publishing packages..."
+          pnpm changeset publish
+
+          echo "Publish completed successfully!"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Commit version changes
+        if: steps.check-changesets.outputs.has-changesets == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: release @ping3/pong" || echo "No changes to commit"
+          git push origin main
+
+      # - name: Send Slack notification on release
+      #   if: steps.changesets.outputs.published == 'true'
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: success
+      #     fields: repo,message,commit,author,action,eventName,ref,workflow
+      #     text: "🚀 @ping3/pong has been released!"
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Create GitHub Release
+        if: steps.check-changesets.outputs.has-changesets == 'true'
+        run: |
+          PACKAGE_VERSION=$(jq -r '.version' packages/pong/package.json)
+          gh release create "@ping3/pong@$PACKAGE_VERSION" \
+            --title "@ping3/pong@$PACKAGE_VERSION" \
+            --notes "## What's Changed
+
+          See the [CHANGELOG.md](./packages/pong/CHANGELOG.md) for details.
+
+          ## Installation
+
+          \`\`\`bash
+          npm install @ping3/pong@$PACKAGE_VERSION
+          \`\`\`" \
+            packages/pong/dist/* \
+            packages/pong/package.json \
+            packages/pong/README.md \
+            packages/pong/LICENSE
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

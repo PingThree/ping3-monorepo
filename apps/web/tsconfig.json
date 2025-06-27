@@ -1,0 +1,13 @@
+{
+  "extends": "@repo/typescript-config/nextjs",
+  "compilerOptions": {
+    "types": ["vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "noImplicitAny": false
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next.config.ts"],
+  "exclude": ["node_modules"]
+}

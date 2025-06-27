@@ -1,0 +1,85 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalEnv": [
+    "PRIVATE_MAINNET_RPC",
+    "PRIVATE_OPTIMISM_RPC",
+    "PRIVATE_UNICHAIN_RPC",
+    "PRIVATE_POLYGON_RPC",
+    "PRIVATE_SONIC_RPC",
+    "PRIVATE_FRAXTAL_RPC",
+    "PRIVATE_WORLDCHAIN_RPC",
+    "PRIVATE_BASE_RPC",
+    "PRIVATE_HYPEREVM_RPC",
+    "PRIVATE_MODE_RPC",
+    "PRIVATE_ARBITRUM_RPC",
+    "PRIVATE_HEMI_RPC",
+    "PRIVATE_INK_RPC",
+    "PRIVATE_PLUME_RPC",
+    "PRIVATE_SCROLL_RPC",
+    "PRIVATE_SEPOLIA_RPC",
+    "PRIVATE_CORN_RPC",
+    "PRIVATE_LISK_RPC",
+    "PRIVATE_KATANA_RPC",
+    "CI",
+    "TMUX",
+    "NEXT_RUNTIME",
+    "NODE_ENV",
+    "REACT_SCAN",
+    "SENTRY_AUTH_TOKEN",
+    "SILENT_TESTS",
+    "TURBOPACK",
+    "NEXT_PUBLIC_E2E_TEST",
+    "FOUNDRY_DISABLE_NIGHTLY_WARNING",
+    "NEXT_PUBLIC_BLUE_SERVICES_API",
+    "ETHERSCAN_API_KEY"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "start": {
+      "dependsOn": ["^start"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "lint:fix": {
+      "dependsOn": ["^lint:fix"]
+    },
+    "gen:graphql": {
+      "dependsOn": ["^gen:graphql"],
+      "inputs": ["**/*.graphql"],
+      "outputs": ["lib/shared/services/api/generated/generated/**"]
+    },
+    "gen:rewards-api": {
+      "dependsOn": ["^gen:rewards-api"],
+      "inputs": ["**/*.graphql"],
+      "outputs": ["lib/shared/services/programs/rewards-api/auto-types.ts"]
+    },
+    "test:unit": {
+      "dependsOn": ["^test:unit", "^@repo/web3#build", "^@repo/utils#build"]
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck", "^build"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": [
+        "^@repo/web3#build",
+        "^@repo/utils#build",
+        "^@ping3/pong#build"
+      ]
+    },
+    "gen:wagmi": {
+      "dependsOn": ["^gen:wagmi"]
+    },
+    "test:e2e:dev": {
+      "dependsOn": ["^build"],
+      "passThroughEnv": ["PLAYWRIGHT_*"]
+    }
+  }
+}

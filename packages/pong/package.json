@@ -1,0 +1,121 @@
+{
+  "name": "@ping3/pong",
+  "version": "0.0.1",
+  "description": "TypeScript bindings and React hooks for interacting with the Ping3 smart contract",
+  "keywords": [
+    "ethereum",
+    "smart-contract",
+    "ping3",
+    "wagmi",
+    "viem",
+    "typescript",
+    "react",
+    "hooks",
+    "web3"
+  ],
+  "homepage": "https://github.com/PingThree/ping3-monorepo#readme",
+  "bugs": {
+    "url": "https://github.com/PingThree/ping3-monorepo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PingThree/ping3-monorepo.git",
+    "directory": "packages/pong"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Ping3",
+    "url": "https://github.com/PingThree"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "!dist/**/*.tsbuildinfo",
+    "src",
+    "!src/**/*.test.*",
+    "!src/**/*.spec.*"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:docs": "typedoc",
+    "clean": "rm -rf dist .turbo node_modules/.cache",
+    "dev": "tsup --watch",
+    "format": "prettier --write .",
+    "gen:wagmi": "wagmi generate",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "prepare": "pnpm run build",
+    "size": "size-limit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "viem": "2.29.1",
+    "wagmi": "^2.14.15"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.9",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@size-limit/preset-small-lib": "^11.1.6",
+    "@types/node": "^24.0.4",
+    "@vitest/coverage-v8": "^2.1.8",
+    "@wagmi/cli": "^2.1.15",
+    "dotenv": "^16.5.0",
+    "eslint": "^9.25.1",
+    "jsdom": "^26.0.0",
+    "size-limit": "^11.1.6",
+    "tsup": "^8.3.5",
+    "typedoc": "^0.27.4",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "80 KB"
+    },
+    {
+      "path": "dist/index.cjs",
+      "limit": "80 KB"
+    }
+  ]
+}

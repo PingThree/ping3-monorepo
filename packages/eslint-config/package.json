@@ -1,0 +1,27 @@
+{
+  "name": "@repo/eslint-config",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./base": "./base.js",
+    "./next": "./next.js",
+    "./react-internal": "./react-internal.js",
+    "./playwright": "./playwright.js"
+  },
+  "dependencies": {
+    "eslint": "^9.28.0"
+  },
+  "devDependencies": {
+    "@repo/prettier-config": "workspace:*",
+    "@eslint/js": "^9.25.1",
+    "@next/eslint-plugin-next": "^15.1.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-only-warn": "^1.1.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-turbo": "^2.3.0",
+    "globals": "^16.0.0",
+    "typescript-eslint": "^8.15.0"
+  }
+}
