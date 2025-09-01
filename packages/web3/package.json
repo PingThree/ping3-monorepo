@@ -25,7 +25,7 @@
     "defi-numbers": "^0.2.0",
     "lodash-es": "^4.17.21",
     "server-only": "^0.0.1",
-    "usehooks-ts": "^2.16.0",
+    "usehooks-ts": "^3.1.1",
     "viem": "^2.29.1"
   },
   "peerDependencies": {
