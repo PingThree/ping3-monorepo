@@ -21,7 +21,7 @@
     "@apollo/client-integration-nextjs": "^0.12.2",
     "@dicebear/collection": "^9.2.1",
     "@dicebear/core": "^9.2.1",
-    "@internationalized/date": "3.8.0",
+    "@internationalized/date": "3.10.0",
     "@morpho-org/rewards-client": "^0.1.4",
     "@react-aria/i18n": "^3.12.7",
     "@react-stately/data": "^3.12.2",
